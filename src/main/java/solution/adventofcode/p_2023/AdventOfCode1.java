@@ -1,8 +1,6 @@
-package solution.adventofcode;
+package solution.adventofcode.p_2023;
 
-import java.util.Map;
-
-public class AdventOfCode1_2 {
+public class AdventOfCode1 {
 
     static String input = """
             four82nine74
@@ -1005,73 +1003,25 @@ public class AdventOfCode1_2 {
             fpctmmvvnbftv2
             nkxmdshm5twoseven672
             88788jnscmpqr66sxcjx""";
-//    static String letter = "one,two,three,four,five,six,seven,eight,nine";
-    static Map<String, String> numLetters = Map.ofEntries(
-            Map.entry("one", "1"),
-            Map.entry("two", "2"),
-            Map.entry("three", "3"),
-            Map.entry("four", "4"),
-            Map.entry("five", "5"),
-            Map.entry("six", "6"),
-            Map.entry("seven", "7"),
-            Map.entry("eight", "8"),
-            Map.entry("nine", "9")
-    );
-
     public static void main(String[] args) {
         int result = 0;
         for (String s : input.split("\n")) {
-            StringBuffer f = getValue(s, false);
-            f.append(getValue(new StringBuilder(s).reverse().toString(),true));
+            StringBuffer f = getValue(s);
+            f.append(getValue(new StringBuilder(s).reverse().toString()));
             result +=Integer.parseInt(f.toString());
         }
         System.out.println("OK: " + result);
     }
 
-    public static StringBuffer getValue(String input, boolean isReverse) {
+    public static StringBuffer getValue(String input) {
         String[] n = input.split(""); //array of strings
         StringBuffer f = new StringBuffer(); // buffer to store numbers
-        int nLength = n.length;
-        for (int i = 0; i < nLength; i++) {
-            String s = n[i];
+        for (String s : n) {
             if ((s.matches("[0-9]+"))) {// validating numbers
                 f.append(s);
                 break;
             }
-            String temp;
-            if (i + 2 < nLength) {
-                temp = n[i] + n[i + 1] + n[i + 2];
-                String rsTemp = isLetterNumber(temp, isReverse);
-                if (!rsTemp.isEmpty()) {
-                    f.append(rsTemp);
-                    break;
-                }
-            }
-            if (i + 3 < nLength) {
-                temp = n[i] + n[i + 1] + n[i + 2] + n[i + 3];
-                String rsTemp = isLetterNumber(temp, isReverse);
-                if (!rsTemp.isEmpty()) {
-                    f.append(rsTemp);
-                    break;
-                }
-            }
-            if (i + 4 < nLength) {
-                temp = n[i] + n[i + 1] + n[i + 2] + n[i + 3] + n[i + 4];
-                String rsTemp = isLetterNumber(temp, isReverse);
-                if (!rsTemp.isEmpty()) {
-                    f.append(rsTemp);
-                    break;
-                }
-            }
-
         }
         return f;
-    }
-    public static String isLetterNumber(String input, boolean isReverse) {
-        String temp = input;
-        if (isReverse) {
-             temp = new StringBuilder(input).reverse().toString();
-        }
-        return numLetters.getOrDefault(temp, "");
     }
 }

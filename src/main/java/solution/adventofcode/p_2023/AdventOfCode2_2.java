@@ -1,10 +1,10 @@
-package solution.adventofcode;
+package solution.adventofcode.p_2023;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdventOfCode2 {
+public class AdventOfCode2_2 {
 
     static String input = """
             Game 1: 2 blue, 3 red; 3 green, 3 blue, 6 red; 4 blue, 6 red; 2 green, 2 blue, 9 red; 2 red, 4 blue
@@ -111,44 +111,28 @@ public class AdventOfCode2 {
         int result = 0;
         int idx = 0;
         for (String s : input.split("\n")) {
-            idx = idx + 1;
-            if (isPossibleGame(s)){
-                result += idx;
-            } else {
-                System.out.println(s);
-            }
+            result += getResultGame(s);
         }
         System.out.println("OK: " + result);
     }
 
 
-    public static boolean isPossibleGame(String game){
+    public static int getResultGame(String game){
         game = game.split(":")[1].trim();
-
         String[] set = game.split(";");
+        Map<String, Integer> colorAndTotalCube = new HashMap<String, Integer>();
         for (String value : set) {
             String[] cubesAndColor = Arrays.stream(value.trim().split(",")).map(String::trim).toArray(String[]::new);
-            Map<String, Integer> colorAndTotalCube = new HashMap<String, Integer>();
             for (String s : cubesAndColor) {
                 String[] numAndColor = s.split(" ");
-                if (colorAndTotalCube.containsKey(numAndColor[1])) {
-                    colorAndTotalCube.put(numAndColor[1], colorAndTotalCube.get(numAndColor[1]) + Integer.parseInt(numAndColor[0]));
-                } else {
+                if (!colorAndTotalCube.containsKey(numAndColor[1]) || colorAndTotalCube.get(numAndColor[1]) <  Integer.parseInt(numAndColor[0])) {
                     colorAndTotalCube.put(numAndColor[1], Integer.parseInt(numAndColor[0]));
-                }
-
-                if (colorAndTotalCube.containsKey("red") && colorAndTotalCube.get("red") > 12) {
-                    return false;
-                }
-                if (colorAndTotalCube.containsKey("green") && colorAndTotalCube.get("green") > 13) {
-                    return false;
-                }
-                if (colorAndTotalCube.containsKey("blue") && colorAndTotalCube.get("blue") > 14) {
-                    return false;
                 }
             }
         }
-        return true;
+        int red = colorAndTotalCube.getOrDefault("red", 1);
+        int blue = colorAndTotalCube.getOrDefault("blue", 1);
+        int green = colorAndTotalCube.getOrDefault("green", 1);
+        return red * green * blue;
     }
-
 }

@@ -1,4 +1,4 @@
-package solution.adventofcode;
+package solution.adventofcode.p_2023;
 
 import java.util.ArrayList;
 import java.util.Arrays;
